@@ -2,6 +2,7 @@ import sys
 import os
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 def load_dataset(p = 4, n = 20):
     file_path = os.path.join(sys.path[0], 'dataset', "P_{0}_N_{1}.xlsx".format(p, n))
@@ -19,3 +20,7 @@ def load_dataset(p = 4, n = 20):
 
     #Return the matrix of points
     return points
+
+def graph_raw_points(points):
+    plt.plot(points[:, 0], points[:, 1], 'o', color='black')
+    plt.show()

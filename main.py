@@ -1,6 +1,12 @@
-from utils.file_io import load_dataset
+from utils.file_io import load_dataset, graph_raw_points
+
+from GA.genetic_algorithm import genetic_algorithm
 def main():
-    graph = load_dataset(4, 20)
+    p = 4
+    n = 20
+    points = load_dataset(p, n)
+
+    GA = genetic_algorithm(p, n, points)
     print()
 
 
