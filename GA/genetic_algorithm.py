@@ -9,7 +9,7 @@ class genetic_algorithm:
     """
     def __init__(self, p, n, points,
                        selection = None,
-                       selection_adjust = None,
+                       selection_adjustments = None,
                        crossover = None,
                        mutation = None,
                        crossover_rate = None,
@@ -20,7 +20,7 @@ class genetic_algorithm:
         self.points = points
 
         self.selection = selection
-        self.selection_adjust = selection_adjust
+        self.selection_adjustments = selection_adjustments
 
         self.crossover = crossover
         self.crossover_rate = crossover_rate
@@ -117,6 +117,16 @@ class genetic_algorithm:
         y_term = (self.points[curr_city][1] - self.points[selected_city][1]) ** 2
         return math.sqrt(x_term + y_term)
     
+    def __get_elite_chromosomes(self, adjusted_fitness):
+        
+        return ()
 
-    def run_algorithm(self, iterations = 1000):
-        print()
+    def run_algorithm(self, iterations = 1):
+
+        for iteration in range(0, iterations):
+
+            adjusted_fitness = self.selection_adjustments(
+                self.calculate_raw_fitness(),
+                self.population_size
+            )
+            new_population = np.array((self.population_size, self.n), dtype=np.int32)

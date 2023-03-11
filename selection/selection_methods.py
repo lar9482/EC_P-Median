@@ -97,8 +97,38 @@ def rank(adjusted_fitness_chromosome):
 
     return (chromosome1, chromosome2)
 
+def touranment_adjustments(fitness_to_chromosome, population_size):
+    #No change is applied for touranment selection
+    return fitness_to_chromosome
 
-def touranment(fitness_to_chromosome):
+def touranment(adjusted_fitness_chromosome):    
 
-    fitness_chromosome = copy.deepcopy(fitness_to_chromosome)
-    pass
+    #Getting two random fitness values to consider for the 1st chromosome
+    chromsome1_first_fitness = random.choice(list(adjusted_fitness_chromosome.keys()))
+    chromsome1_second_fitness = random.choice(list(adjusted_fitness_chromosome.keys()))
+
+    #Getting two random fitness values to consider for the 2nd chromosome
+    chromsome2_first_fitness = random.choice(list(adjusted_fitness_chromosome.keys()))
+    chromsome2_second_fitness = random.choice(list(adjusted_fitness_chromosome.keys()))
+    
+    #Assigning which fitness value is more than the other
+    chromosome1_max_fitness = max(chromsome1_first_fitness, chromsome1_second_fitness)
+    chromosome1_min_fitness = min(chromsome1_first_fitness, chromsome1_second_fitness)
+
+    chromosome2_max_fitness = max(chromsome2_first_fitness, chromsome2_second_fitness)
+    chromosome2_min_fitness = min(chromsome2_first_fitness, chromsome2_second_fitness)
+
+    chromosome1 = np.array((len(adjusted_fitness_chromosome)))
+    chromosome2 = np.array((len(adjusted_fitness_chromosome)))
+
+    if (random.uniform(0, 1) < 0.75):
+        chromosome1 = adjusted_fitness_chromosome[chromosome1_min_fitness]
+    else:
+        chromosome1 = adjusted_fitness_chromosome[chromosome1_max_fitness]
+
+    if (random.uniform(0, 1) < 0.75):
+        chromosome2 = adjusted_fitness_chromosome[chromosome2_min_fitness]
+    else:
+        chromosome2 = adjusted_fitness_chromosome[chromosome2_max_fitness]
+
+    return (chromosome1, chromosome2)
