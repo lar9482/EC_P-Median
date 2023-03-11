@@ -73,24 +73,39 @@ class genetic_algorithm:
     def calculate_raw_fitness(self):
         fitness_to_chromosome = {}
 
+        #For every possible chromosome in the population pool, get its fitness
+        #based on the specifications of the p-median problem
         for chromosome in range(0, self.population_size):
-
+            
+            #Get the city indices that have been selected(where they are 1)
             selected_cities = np.where(self.population[chromosome] == 1)[0]
+
+            #Keep track of the total minimum distances
             total_distance = 0
+
+            #For every city in a particular chromosome
             for city in range(0, len(self.population[chromosome])):
 
+                #Skip over cities that have been selected
+                if (city in selected_cities):
+                    continue
+
+                #Keep track of the minimum distance
                 min_distance = sys.maxsize
 
+                #Scanning through the selected cities, and get the minimum distance
+                #between a 
                 for selected_city in selected_cities:
                     curr_distance = self.__euclidean_distance(city, selected_city)
                     if (curr_distance < min_distance):
                         min_distance = curr_distance
 
                 total_distance += min_distance
-                    
+            
+            #Store a fitness_chromosome pairing
             fitness_to_chromosome[total_distance] = self.population[chromosome]
         
-        return fitness_to_chromosome
+        return dict(sorted(fitness_to_chromosome.items()))
 
     def __euclidean_distance(self, curr_city, selected_city):
         x_term = (self.points[curr_city][0] - self.points[selected_city][0]) ** 2

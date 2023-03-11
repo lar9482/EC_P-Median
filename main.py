@@ -7,7 +7,7 @@ def main():
     points = load_dataset(p, n)
 
     GA = genetic_algorithm(p, n, points)
-    GA.calculate_raw_fitness()
+    test = GA.calculate_raw_fitness()
     print()
 
 
