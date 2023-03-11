@@ -72,50 +72,85 @@ class genetic_algorithm:
 
         return initial_population
     
+    """
+        The actual fitness function for this genetic algorithm.
+        For every vertex that is not selected(0s in the chromosome),
+        the distance inbetween all selected vertices(1s in the chromosome) will be calculated, 
+        which will the minimum distance to be returned.
+
+        The fitness function will sum up the minimum distances inbetween all non-selected vertices and
+        and the closest select vertices.
+
+        @param chromosome(np.array((n))):
+               The bitstring that represents selected(1) and non-selected(0) cities.
+               NOTE: Each chromosome will be exactly 'p' 1s.
+
+        @returns int:
+                The sum of the minimum distances between all non-selected cities and the closest selected cities.
+    """
+    def fitness_function(self, chromosome):
+
+        #Get the city indices that have been selected(where they are 1)
+        selected_cities = np.where(self.population[chromosome] == 1)[0]
+
+        #Keep track of the total minimum distances
+        total_distance = 0
+
+        #For every city in a particular chromosome
+        for city in range(0, len(self.population[chromosome])):
+
+            #Skip over cities that have been selected
+            if (city in selected_cities):
+                continue
+
+            #Keep track of the minimum distance
+            min_distance = sys.maxsize
+
+            #Scanning through the selected cities, and get the minimum distance
+            #between a current city and the all of the selected cities in the chromosome
+            for selected_city in selected_cities:
+                curr_distance = self.__euclidean_distance(city, selected_city)
+                if (curr_distance < min_distance):
+                    min_distance = curr_distance
+
+            total_distance += min_distance
+
+        return total_distance
+
+    def __euclidean_distance(self, curr_city, selected_city):
+        x_term = (self.points[curr_city][0] - self.points[selected_city][0]) ** 2
+        y_term = (self.points[curr_city][1] - self.points[selected_city][1]) ** 2
+        return math.sqrt(x_term + y_term)
+    
+    """
+        This is a helper function that will calculate the fitness for all of the 
+        chromosomes in the population pool.
+
+        @returns (dict)
+                 This dictionary contains fitness-chromosome pairings, 
+                 where the key is the raw fitness
+                 and the value is the chromosome associated with the raw fitness.
+    """
     def calculate_raw_fitness(self):
         fitness_to_chromosome = {}
 
         #For every possible chromosome in the population pool, get its fitness
         #based on the specifications of the p-median problem
         for chromosome in range(0, self.population_size):
-            
-            #Get the city indices that have been selected(where they are 1)
-            selected_cities = np.where(self.population[chromosome] == 1)[0]
 
-            #Keep track of the total minimum distances
-            total_distance = 0
-
-            #For every city in a particular chromosome
-            for city in range(0, len(self.population[chromosome])):
-
-                #Skip over cities that have been selected
-                if (city in selected_cities):
-                    continue
-
-                #Keep track of the minimum distance
-                min_distance = sys.maxsize
-
-                #Scanning through the selected cities, and get the minimum distance
-                #between a current city and the all of the selected cities in the chromosome
-                for selected_city in selected_cities:
-                    curr_distance = self.__euclidean_distance(city, selected_city)
-                    if (curr_distance < min_distance):
-                        min_distance = curr_distance
-
-                total_distance += min_distance
+            #Getting the raw fitness of the current chromosome
+            raw_fitness = self.fitness_function(chromosome)
             
             #Store a fitness_chromosome pairing
-            if (not (total_distance in fitness_to_chromosome)):
-                fitness_to_chromosome[total_distance] = [self.population[chromosome]]
+            if (not (raw_fitness in fitness_to_chromosome)):
+                fitness_to_chromosome[raw_fitness] = [self.population[chromosome]]
             else:
-                fitness_to_chromosome[total_distance].append(self.population[chromosome])
+                fitness_to_chromosome[raw_fitness].append(self.population[chromosome])
         
+        #Return 'fitness_to_chromosome' pairings, which will be sorted from greatest fitness to least fitness
         return dict(sorted(fitness_to_chromosome.items(), reverse=True))
 
-    def __euclidean_distance(self, curr_city, selected_city):
-        x_term = (self.points[curr_city][0] - self.points[selected_city][0]) ** 2
-        y_term = (self.points[curr_city][1] - self.points[selected_city][1]) ** 2
-        return math.sqrt(x_term + y_term)
+    
     
     def __get_elite_chromosomes(self, adjusted_fitness):
 
@@ -130,6 +165,18 @@ class genetic_algorithm:
             adjusted_fitness[next_best_fitness]
         )
 
+    def __fixup_chromosome(self, child):
+        while (np.sum(child) > self.p):
+            selected_cities = np.where(child == 1)[0]
+            print()
+
+        while (np.sum(child) < self.p):
+            print()
+        print(np.sum(child) > self.p)
+        print(np.sum(child) < self.p)
+
+        print()
+
     def run_algorithm(self, iterations = 1):
 
         for iteration in range(0, iterations):
@@ -138,21 +185,29 @@ class genetic_algorithm:
                 self.calculate_raw_fitness(),
                 self.population_size
             )
-            new_population = np.array((self.population_size, self.n), dtype=np.int32)
+            new_population_pool = np.array((self.population_size, self.n), dtype=np.int32)
 
             for pop_index in range(0, int(self.population_size/2)):
 
                 child1 = np.empty((self.n), dtype=np.int32)
                 child2 = np.empty((self.n), dtype=np.int32)
 
+                #At the beginning of a new generation, copy over the best 
+                #chromosomes from the last generation.
                 if (pop_index == 0):
                     (child1, child2) = self.__get_elite_chromosomes(adjusted_fitness)
                 else:
+
+                    #Select two chromosomes from the pool
                     (parent1, parent2) = self.selection(adjusted_fitness)
 
+                    #Crossover the selected chromosomes
                     if (random.uniform(0, 1) < self.crossover_rate):
                         (child1, child2) = self.crossover(parent1, parent2)
                     else:
                         (child1, child2) = (parent1, parent2)
-                    print()
+                    
+                    #Fixup the chromosomes(i.e they do not have exactly 'p' 1 bits)
+                    self.__fixup_chromosome(child1)
+                    self.__fixup_chromosome(child2)
                 print()
