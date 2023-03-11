@@ -121,14 +121,17 @@ def touranment(adjusted_fitness_chromosome):
     chromosome1 = np.array((len(adjusted_fitness_chromosome)))
     chromosome2 = np.array((len(adjusted_fitness_chromosome)))
 
+    #75% of the time, get the chromosome that has a lower fitness value(
+    #   NOTE: This is a minimization problem, so lower fitness is better
+    # )
     if (random.uniform(0, 1) < 0.75):
-        chromosome1 = adjusted_fitness_chromosome[chromosome1_min_fitness]
+        chromosome1 = random.choice(adjusted_fitness_chromosome[chromosome1_min_fitness])
     else:
-        chromosome1 = adjusted_fitness_chromosome[chromosome1_max_fitness]
+        chromosome1 = random.choice(adjusted_fitness_chromosome[chromosome1_max_fitness])
 
     if (random.uniform(0, 1) < 0.75):
-        chromosome2 = adjusted_fitness_chromosome[chromosome2_min_fitness]
+        chromosome2 = random.choice(adjusted_fitness_chromosome[chromosome2_min_fitness])
     else:
-        chromosome2 = adjusted_fitness_chromosome[chromosome2_max_fitness]
+        chromosome2 = random.choice(adjusted_fitness_chromosome[chromosome2_max_fitness])
 
     return (chromosome1, chromosome2)

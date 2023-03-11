@@ -12,8 +12,8 @@ class genetic_algorithm:
                        selection_adjustments = None,
                        crossover = None,
                        mutation = None,
-                       crossover_rate = None,
-                       mutation_rate = None,
+                       crossover_rate = 1,
+                       mutation_rate = 0.05,
                        size = 100):
         self.p = p
         self.n = n
@@ -118,8 +118,17 @@ class genetic_algorithm:
         return math.sqrt(x_term + y_term)
     
     def __get_elite_chromosomes(self, adjusted_fitness):
-        
-        return ()
+
+        #Getting the two best fittest values from the adjusted fitness pool
+        #(Should be the last two entries since the pool is sorted)
+        best_fitness = list(adjusted_fitness.keys())[len(adjusted_fitness)-1]
+        next_best_fitness = list(adjusted_fitness.keys())[len(adjusted_fitness)-2]
+
+        #Return the best chromosomes from the adjusted fitness pool
+        return (
+            adjusted_fitness[best_fitness],
+            adjusted_fitness[next_best_fitness]
+        )
 
     def run_algorithm(self, iterations = 1):
 
@@ -130,3 +139,13 @@ class genetic_algorithm:
                 self.population_size
             )
             new_population = np.array((self.population_size, self.n), dtype=np.int32)
+
+            for pop_index in range(0, int(self.population_size/2)):
+
+                child1 = np.empty((self.n))
+                child2 = np.empty((self.n))
+
+                if (pop_index == 0):
+                    (child1, child2) = self.__get_elite_chromosomes(adjusted_fitness)
+                else:
+                    (parent1, parent2) = self.selection(adjusted_fitness)
