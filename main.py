@@ -3,6 +3,25 @@ from GA.genetic_algorithm import genetic_algorithm
 from selection.selection_methods import roulette, roulette_adjustments, rank, rank_adjustments, touranment, touranment_adjustments
 from crossover.crossover_methods import single_point, double_point, uniform
 
+
+def test_selection():
+
+    GA = genetic_algorithm(4, 20, load_dataset(4, 20), 
+                           roulette, 
+                           roulette_adjustments,
+                           single_point)
+    
+    adjusted_fitness = roulette_adjustments(GA.calculate_raw_fitness(), GA.population_size)
+    roulette(adjusted_fitness)
+
+    adjusted_fitness = rank_adjustments(GA.calculate_raw_fitness(), GA.population_size)
+    rank(adjusted_fitness)
+
+    adjusted_fitness = touranment_adjustments(GA.calculate_raw_fitness(), GA.population_size)
+    touranment(adjusted_fitness)
+    print()
+
+
 def main():
     p = 4
     n = 20
@@ -12,16 +31,7 @@ def main():
                            roulette, 
                            roulette_adjustments,
                            single_point)
-    # test = GA.calculate_raw_fitness()
 
-    # adjusted_fitness = roulette_adjustments(GA.calculate_raw_fitness(), GA.population_size)
-    # roulette(adjusted_fitness)
-
-    # adjusted_fitness = rank_adjustments(GA.calculate_raw_fitness(), GA.population_size)
-    # rank(adjusted_fitness)
-
-    adjusted_fitness = touranment_adjustments(GA.calculate_raw_fitness(), GA.population_size)
-    touranment(adjusted_fitness)
     GA.run_algorithm()
 
     print()

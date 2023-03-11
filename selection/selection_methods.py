@@ -8,7 +8,6 @@
     selection methods that will be used in this project
 """
 
-import copy
 import random
 import numpy as np
 
