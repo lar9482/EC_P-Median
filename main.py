@@ -1,6 +1,6 @@
 from utils.file_io import load_dataset, graph_raw_points
 from GA.genetic_algorithm import genetic_algorithm
-from selection.selection_methods import roulette
+from selection.selection_methods import roulette, rank
 
 def main():
     p = 4
@@ -10,7 +10,8 @@ def main():
     GA = genetic_algorithm(p, n, points, roulette)
     test = GA.calculate_raw_fitness()
 
-    roulette(test)
+    # roulette(test, GA.population_size)
+    rank(test, GA.population_size)
     print()
 
 

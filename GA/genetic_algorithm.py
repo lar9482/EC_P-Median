@@ -103,7 +103,10 @@ class genetic_algorithm:
                 total_distance += min_distance
             
             #Store a fitness_chromosome pairing
-            fitness_to_chromosome[total_distance] = self.population[chromosome]
+            if (not (total_distance in fitness_to_chromosome)):
+                fitness_to_chromosome[total_distance] = [self.population[chromosome]]
+            else:
+                fitness_to_chromosome[total_distance].append(self.population[chromosome])
         
         return dict(sorted(fitness_to_chromosome.items(), reverse=True))
 
