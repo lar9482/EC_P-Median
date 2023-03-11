@@ -142,10 +142,17 @@ class genetic_algorithm:
 
             for pop_index in range(0, int(self.population_size/2)):
 
-                child1 = np.empty((self.n))
-                child2 = np.empty((self.n))
+                child1 = np.empty((self.n), dtype=np.int32)
+                child2 = np.empty((self.n), dtype=np.int32)
 
                 if (pop_index == 0):
                     (child1, child2) = self.__get_elite_chromosomes(adjusted_fitness)
                 else:
                     (parent1, parent2) = self.selection(adjusted_fitness)
+
+                    if (random.uniform(0, 1) < self.crossover_rate):
+                        (child1, child2) = self.crossover(parent1, parent2)
+                    else:
+                        (child1, child2) = (parent1, parent2)
+                    print()
+                print()

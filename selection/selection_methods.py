@@ -1,11 +1,11 @@
 """
-    Contains the implementationsof 
+    Contains the implementations of 
 
     - Roulette
     - Rank
     - Touranment
 
-    Selection to use in this project
+    selection methods that will be used in this project
 """
 
 import copy

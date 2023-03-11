@@ -1,13 +1,17 @@
 from utils.file_io import load_dataset, graph_raw_points
 from GA.genetic_algorithm import genetic_algorithm
 from selection.selection_methods import roulette, roulette_adjustments, rank, rank_adjustments, touranment, touranment_adjustments
+from crossover.crossover_methods import single_point, double_point, uniform
 
 def main():
     p = 4
     n = 20
     points = load_dataset(p, n)
 
-    GA = genetic_algorithm(p, n, points, roulette, roulette_adjustments)
+    GA = genetic_algorithm(p, n, points, 
+                           roulette, 
+                           roulette_adjustments,
+                           single_point)
     # test = GA.calculate_raw_fitness()
 
     # adjusted_fitness = roulette_adjustments(GA.calculate_raw_fitness(), GA.population_size)
