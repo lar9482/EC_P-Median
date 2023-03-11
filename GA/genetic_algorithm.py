@@ -105,7 +105,7 @@ class genetic_algorithm:
             #Store a fitness_chromosome pairing
             fitness_to_chromosome[total_distance] = self.population[chromosome]
         
-        return dict(sorted(fitness_to_chromosome.items()))
+        return dict(sorted(fitness_to_chromosome.items(), reverse=True))
 
     def __euclidean_distance(self, curr_city, selected_city):
         x_term = (self.points[curr_city][0] - self.points[selected_city][0]) ** 2
