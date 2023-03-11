@@ -30,7 +30,7 @@ def main():
     GA = genetic_algorithm(p, n, points, 
                            roulette, 
                            roulette_adjustments,
-                           single_point)
+                           double_point)
 
     GA.run_algorithm()
 
