@@ -91,13 +91,13 @@ class genetic_algorithm:
     def fitness_function(self, chromosome):
 
         #Get the city indices that have been selected(where they are 1)
-        selected_cities = np.where(self.population[chromosome] == 1)[0]
+        selected_cities = np.where(chromosome == 1)[0]
 
         #Keep track of the total minimum distances
         total_distance = 0
 
         #For every city in a particular chromosome
-        for city in range(0, len(self.population[chromosome])):
+        for city in range(0, len(chromosome)):
 
             #Skip over cities that have been selected
             if (city in selected_cities):
@@ -136,16 +136,16 @@ class genetic_algorithm:
 
         #For every possible chromosome in the population pool, get its fitness
         #based on the specifications of the p-median problem
-        for chromosome in range(0, self.population_size):
+        for chromosome_index in range(0, self.population_size):
 
             #Getting the raw fitness of the current chromosome
-            raw_fitness = self.fitness_function(chromosome)
+            raw_fitness = self.fitness_function(self.population[chromosome_index])
             
             #Store a fitness_chromosome pairing
             if (not (raw_fitness in fitness_to_chromosome)):
-                fitness_to_chromosome[raw_fitness] = [self.population[chromosome]]
+                fitness_to_chromosome[raw_fitness] = [self.population[chromosome_index]]
             else:
-                fitness_to_chromosome[raw_fitness].append(self.population[chromosome])
+                fitness_to_chromosome[raw_fitness].append(self.population[chromosome_index])
         
         #Return 'fitness_to_chromosome' pairings, which will be sorted from greatest fitness to least fitness
         return dict(sorted(fitness_to_chromosome.items(), reverse=True))
@@ -168,6 +168,13 @@ class genetic_algorithm:
     def __fixup_chromosome(self, child):
         while (np.sum(child) > self.p):
             selected_cities = np.where(child == 1)[0]
+            max_fitness = -sys.maxsize - 1 
+            for selected_city_index in selected_cities:
+                shorter_child = child.copy()
+                shorter_child[selected_city_index] = 0
+                shorter_fitness = self.fitness_function(shorter_child)
+
+                print(selected_city_index)
             print()
 
         while (np.sum(child) < self.p):
