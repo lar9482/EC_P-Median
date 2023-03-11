@@ -166,23 +166,58 @@ class genetic_algorithm:
         )
 
     def __fixup_chromosome(self, child):
+
+        #While there are more selected cities than allowed
+        #Remove cities that take away the maximium fitness from the chromosome
         while (np.sum(child) > self.p):
+
+            #Getting indices that are 1 in the chromosome(selected cities)
             selected_cities = np.where(child == 1)[0]
+
+            #Keep track of the max fitness and a possible child to return
             max_fitness = -sys.maxsize - 1 
+            possible_child = np.empty((self.n), dtype=np.int32)
+
             for selected_city_index in selected_cities:
+
+                #Create a copy of the passed in child, and set the 'selected' index to 0,
+                #indicating that the current city is removed
                 shorter_child = child.copy()
                 shorter_child[selected_city_index] = 0
                 shorter_fitness = self.fitness_function(shorter_child)
+                
+                if (shorter_fitness > max_fitness):
+                    max_fitness = shorter_fitness
+                    possible_child = shorter_child
+            
+            #Return the newly created child, which should have one city less
+            child = possible_child
 
-                print(selected_city_index)
-            print()
-
+        #While there are less selected cities than allowed
+        #Add cities that add the minimum possoble fitness to the chromosome
         while (np.sum(child) < self.p):
-            print()
-        print(np.sum(child) > self.p)
-        print(np.sum(child) < self.p)
 
-        print()
+            #Getting indices that are 0 in the chromosome(non selected cities)
+            non_selected_cities = np.where(child == 0)[0]
+
+            #Keep track of the max fitness and a possible child to return
+            min_fitness = sys.maxsize
+            possible_child = np.empty((self.n), dtype=np.int32)
+
+            for non_selected_city_index in non_selected_cities:
+
+                #Create a copy of the passed in child, and set the 'selected' index to 1,
+                #indicating that the current city is added
+                longer_child = child.copy()
+                longer_child[non_selected_city_index] = 1
+                longer_fitness = self.fitness_function(longer_child)
+
+                if (longer_fitness < min_fitness):
+                    min_fitness = longer_fitness
+                    possible_child = longer_child
+            
+            #Return the newly created child, which should more one city more
+            child = possible_child
 
     def run_algorithm(self, iterations = 1):
 
