@@ -9,6 +9,7 @@ class genetic_algorithm:
     """
     def __init__(self, p, n, points,
                        selection = None,
+                       selection_adjust = None,
                        crossover = None,
                        mutation = None,
                        crossover_rate = None,
@@ -19,6 +20,7 @@ class genetic_algorithm:
         self.points = points
 
         self.selection = selection
+        self.selection_adjust = selection_adjust
 
         self.crossover = crossover
         self.crossover_rate = crossover_rate
@@ -94,7 +96,7 @@ class genetic_algorithm:
                 min_distance = sys.maxsize
 
                 #Scanning through the selected cities, and get the minimum distance
-                #between a 
+                #between a current city and the all of the selected cities in the chromosome
                 for selected_city in selected_cities:
                     curr_distance = self.__euclidean_distance(city, selected_city)
                     if (curr_distance < min_distance):
@@ -114,3 +116,7 @@ class genetic_algorithm:
         x_term = (self.points[curr_city][0] - self.points[selected_city][0]) ** 2
         y_term = (self.points[curr_city][1] - self.points[selected_city][1]) ** 2
         return math.sqrt(x_term + y_term)
+    
+
+    def run_algorithm(self, iterations = 1000):
+        print()
