@@ -88,7 +88,7 @@ class genetic_algorithm:
         @returns int:
                 The sum of the minimum distances between all non-selected cities and the closest selected cities.
     """
-    def fitness_function(self, chromosome):
+    def __fitness_function(self, chromosome):
 
         #Get the city indices that have been selected(where they are 1)
         selected_cities = np.where(chromosome == 1)[0]
@@ -139,7 +139,7 @@ class genetic_algorithm:
         for chromosome_index in range(0, self.population_size):
 
             #Getting the raw fitness of the current chromosome
-            raw_fitness = self.fitness_function(self.population[chromosome_index])
+            raw_fitness = self.__fitness_function(self.population[chromosome_index])
             
             #Store a fitness_chromosome pairing
             if (not (raw_fitness in fitness_to_chromosome)):
@@ -185,7 +185,7 @@ class genetic_algorithm:
                 #indicating that the current city is removed
                 shorter_child = replacement_child.copy()
                 shorter_child[selected_city_index] = 0
-                shorter_fitness = self.fitness_function(shorter_child)
+                shorter_fitness = self.__fitness_function(shorter_child)
                 
                 if (shorter_fitness > max_fitness):
                     max_fitness = shorter_fitness
@@ -211,7 +211,7 @@ class genetic_algorithm:
                 #indicating that the current city is added
                 longer_child = replacement_child.copy()
                 longer_child[non_selected_city_index] = 1
-                longer_fitness = self.fitness_function(longer_child)
+                longer_fitness = self.__fitness_function(longer_child)
 
                 if (longer_fitness < min_fitness):
                     min_fitness = longer_fitness
@@ -255,4 +255,11 @@ class genetic_algorithm:
                     #Fixup the chromosomes(i.e they do not have exactly 'p' 1 bits)
                     child1 = self.__fixup_chromosome(child1)
                     child2 = self.__fixup_chromosome(child2)
+
+                    #Mutate the child chromosomes.
+                    if (random.uniform(0, 1) < self.mutation_rate):
+                        child1 = self.mutation(child1)
+                    
+                    if (random.uniform(0, 1) < self.mutation_rate):
+                        child2 = self.mutation(child2)
                 
