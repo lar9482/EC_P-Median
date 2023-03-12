@@ -68,11 +68,14 @@ class genetic_algorithm:
 
     """
         This function will initialize the population pool.
-        @param size(int): The size to specify the population pool
+        @param size: Integer 
+            - The size to specify the population pool
 
         @returns (np.shape(size, n)): 
-                 The initial population pool, 
-                 with 'size' number of chromosomes that are of length 'n'
+            - The initial population pool, 
+              with 'size' number of chromosomes that are of length 'n'
+
+              They represent a bitstring of exactly 'p' 1s.
     """
     def __init_population(self, size):
 

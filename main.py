@@ -24,17 +24,20 @@ def test_selection():
 
 
 def main():
-    p = 4
-    n = 20
+    p = 8
+    n = 72
     points = load_dataset(p, n)
 
     GA = genetic_algorithm(p, n, points, 
                            touranment, 
                            touranment_adjustments,
                            single_point,
-                           simple)
+                           simple,
+                           1,
+                           0.05,
+                           50)
 
-    best_one = GA.run_algorithm(100)
+    best_one = GA.run_algorithm(30)
 
     print()
 
