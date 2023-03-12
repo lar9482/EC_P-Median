@@ -5,7 +5,40 @@ import math
 
 class genetic_algorithm:
     """
-        This constructor method will 
+        This constructor method will initialize the genetic algorithm's global parameters
+
+        @param p: Integer
+            - The number of centers to look for in the dataset
+
+        @param n: Integer
+            - The number of points in the dataset
+
+        @param points: list((Float, Float))
+            - The dataset itself, consisting of a bunch of (x, y) points
+
+        @param selection: F(dict(float: np.array{}))
+            - The selection method for getting two chromosomes from the population pool
+
+        @param selection_adjustments: F(dict(float: np.array), Integer)
+            - The adjustment method used to transform raw fitness values into
+              formats that are easily operatored on by the selection method
+
+        @param crossover: F(np.array, np.array)
+            - The crossover method for producing two children.
+              This is used for exploiting what's known in the state space
+
+        @param mutation: F(np.array)
+            - The mutation method for editing 1 or one bits in a chromosome.
+              This is used for exploring the state space
+
+        @param crossover_rate: Float
+            - The probability of performing a crossover.
+
+        @param mutation_rate: Float
+            - The probability of performing a mutation.
+
+        @param size: Integer
+            - The size of the population pool to work with.
     """
     def __init__(self, p, n, points,
                        selection = None,
@@ -15,9 +48,11 @@ class genetic_algorithm:
                        crossover_rate = 1,
                        mutation_rate = 0.05,
                        size = 100):
+        
         self.p = p
         self.n = n
         self.points = points
+
 
         self.selection = selection
         self.selection_adjustments = selection_adjustments
