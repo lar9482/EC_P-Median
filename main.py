@@ -29,12 +29,12 @@ def main():
     points = load_dataset(p, n)
 
     GA = genetic_algorithm(p, n, points, 
-                           roulette, 
-                           roulette_adjustments,
-                           uniform,
+                           touranment, 
+                           touranment_adjustments,
+                           single_point,
                            simple)
 
-    GA.run_algorithm()
+    best_one = GA.run_algorithm(100)
 
     print()
 

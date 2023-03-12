@@ -161,8 +161,8 @@ class genetic_algorithm:
 
         #Return the best chromosomes from the adjusted fitness pool
         return (
-            adjusted_fitness[best_fitness],
-            adjusted_fitness[next_best_fitness]
+            adjusted_fitness[best_fitness][0],
+            adjusted_fitness[next_best_fitness][0]
         )
 
     def __fixup_chromosome(self, child):
@@ -221,8 +221,15 @@ class genetic_algorithm:
             replacement_child = possible_child
 
         return replacement_child
+    
+    def __best_chromosome(self, adjusted_fitness_chromosome_pool):
+        chromosomes = list(adjusted_fitness_chromosome_pool.values())
+        last_chromosome = chromosomes[len(chromosomes)-1][0]
 
-    def run_algorithm(self, iterations = 1):
+        return last_chromosome
+        
+    def run_algorithm(self, iterations = 20):
+        curr_best_chromosome = np.empty((self.n), dtype=np.int32)
 
         for iteration in range(0, iterations):
 
@@ -230,7 +237,7 @@ class genetic_algorithm:
                 self.calculate_raw_fitness(),
                 self.population_size
             )
-            new_population_pool = np.array((self.population_size, self.n), dtype=np.int32)
+            new_population_pool = np.empty((self.population_size, self.n), dtype=np.int32)
 
             for pop_index in range(0, int(self.population_size/2)):
 
@@ -262,4 +269,18 @@ class genetic_algorithm:
                     
                     if (random.uniform(0, 1) < self.mutation_rate):
                         child2 = self.mutation(child2)
-                
+
+                new_population_pool[pop_index] = child1
+                new_population_pool[pop_index + int(self.population_size/2)] = child2
+            
+
+            self.population = new_population_pool
+            print('Generation: %s' % str(iteration+1))
+            curr_best_chromosome = self.__best_chromosome(adjusted_fitness)
+
+            if (iteration % 10 == 0):
+                print(self.__fitness_function(
+                    curr_best_chromosome
+                ))
+
+        return curr_best_chromosome
