@@ -45,7 +45,7 @@ class genetic_algorithm:
         initial_population = np.empty((size, self.n), dtype=np.int32)
 
         #For every location for a chromosome
-        for chromosome in range(0, size):
+        for chromosome_location in range(0, size):
 
             #Get 'p' city locations that specify the 'median' cities of a chromosome
             selected_cities = {}
@@ -66,9 +66,9 @@ class genetic_algorithm:
                 #If the city has been selected, put 1 in the chromosome to indicate that
                 #it's been 'selected'. Else, put 0 in the chromosome.
                 if (city in selected_cities):
-                    initial_population[chromosome, city] = 1
+                    initial_population[chromosome_location, city] = 1
                 else:
-                    initial_population[chromosome, city] = 0
+                    initial_population[chromosome_location, city] = 0
 
         return initial_population
     
