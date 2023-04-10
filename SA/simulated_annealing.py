@@ -80,7 +80,25 @@ class simulated_annealing:
 
         return initial_solution
 
-    def run_algorithm(self, alpha = 0.95, beta = 1.05):
+    def run_algorithm(self, alpha = 0.80, beta = 1.005):
         
         solution = self.__generate_initial_solution()
+        T = 10
+        max_epoch = 1000
+
+        while (T >= 1):
+            for epoch in range(0, int(max_epoch)):
+                new_solution = self.perbutation(solution, self.points)
+                if (self.__fitness_function(new_solution) < self.__fitness_function(solution)):
+                    solution = new_solution
+                elif (not self.foolish):
+                    chance = random.uniform(0, 1)
+                    chance_threshold = math.exp((self.__fitness_function(solution) -self.__fitness_function(new_solution)) / T)
+                    if (chance < chance_threshold):
+                        solution = new_solution
+            T = alpha*T
+            max_epoch = beta*max_epoch
+            print(T)
+
+        return solution
         

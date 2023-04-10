@@ -71,7 +71,9 @@ def main():
     n = 72
     points = load_dataset(p, n)
     SA = simulated_annealing(p, n, points, simple, False)
-    SA.run_algorithm()
+    best_solution = SA.run_algorithm()
+
+    quick_graphing(best_solution, points)
     print()
 
 
