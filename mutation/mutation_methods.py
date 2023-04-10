@@ -51,7 +51,7 @@ def hyper_heuristic(chromosome, points):
         #Scanning through the neighbors
         for neighbor_city in neighbors:
 
-            #Constructing a chromosome with the neighbor included and the current excluded
+            #Constructing a chromosome with the neighbor included and the current city excluded
             possible_chromosome = mutated_chromosome.copy()
             possible_chromosome[city] = 0
             possible_chromosome[neighbor_city] = 1

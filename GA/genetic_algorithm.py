@@ -266,15 +266,19 @@ class genetic_algorithm:
 
         return last_chromosome
         
-    def run_algorithm(self, iterations = 20):
+    def run_algorithm(self, epochs = 20):
         curr_best_chromosome = np.empty((self.n), dtype=np.int32)
 
-        for iteration in range(0, iterations):
+        for epoch in range(0, epochs):
 
+            #Getting the useful fitness using the fitness function
+            #dict(adjusted_fitness(float): [chromosome]) #A dictionary from the fitness is key and chromosome is value
             adjusted_fitness = self.selection_adjustments(
                 self.calculate_raw_fitness(),
                 self.population_size
             )
+
+            #Allocating a new population pool
             new_population_pool = np.empty((self.population_size, self.n), dtype=np.int32)
 
             for pop_index in range(0, int(self.population_size/2)):
@@ -308,17 +312,20 @@ class genetic_algorithm:
                     if (random.uniform(0, 1) < self.mutation_rate):
                         child2 = self.mutation(child2, self.points)
 
+                #Place the generated child into the new population pool
                 new_population_pool[pop_index] = child1
                 new_population_pool[pop_index + int(self.population_size/2)] = child2
             
 
             self.population = new_population_pool
-            print('Generation: %s' % str(iteration+1))
+            print('Generation: %s' % str(epoch+1))
             curr_best_chromosome = self.__best_chromosome(adjusted_fitness)
 
-            if (iteration % 10 == 0):
+            if (epoch % 10 == 0):
+                print('Current best fitness')
                 print(self.__fitness_function(
                     curr_best_chromosome
                 ))
+                print()
 
         return curr_best_chromosome
