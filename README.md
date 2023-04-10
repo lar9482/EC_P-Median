@@ -14,3 +14,4 @@ Experiments with the following techniques to solve the P-Median problem.
     - Simple and Hyperheuristic perbutation.
     
   - A foolish hill climbing algorithm.
+    - Similiar implementation to simulated annealing, except 'worse' chromosomes are not considered at all.
