@@ -1,5 +1,6 @@
 from utils.file_io import load_dataset, graph_raw_points
 from GA.genetic_algorithm import genetic_algorithm
+from SA.simulated_annealing import simulated_annealing
 from selection.selection_methods import roulette, roulette_adjustments, rank, rank_adjustments, touranment, touranment_adjustments
 from crossover.crossover_methods import single_point, double_point, uniform
 from mutation.mutation_methods import simple, hyper_heuristic
@@ -38,18 +39,16 @@ def quick_graphing(chromosome, points):
         else:
             non_selected[non_selected_i] = points[i]
             non_selected_i += 1
-    \
-    print([x[0] for x in non_selected])
-    print([y[1] for y in non_selected])
+    
     plt.plot([x[0] for x in selected], [y[1] for y in selected], 'o', color='red')
-    plt.plot([x[0] for x in non_selected], [y[1] for y in non_selected], 'x', color='blue')
+    plt.plot([x[0] for x in non_selected], [y[1] for y in non_selected], 'o', color='blue')
     plt.xlim(-2,12)
     plt.ylim(-2,12)
     plt.xscale('linear')
     plt.yscale('linear')
     plt.show()
 
-def main():
+def test_GA():
     p = 8
     n = 72
     points = load_dataset(p, n)
@@ -66,7 +65,13 @@ def main():
     best_chromosome = GA.run_algorithm(25)
 
     quick_graphing(best_chromosome, points)
+def main():
 
+    p = 8
+    n = 72
+    points = load_dataset(p, n)
+    SA = simulated_annealing(p, n, points, simple, False)
+    SA.run_algorithm()
     print()
 
 
