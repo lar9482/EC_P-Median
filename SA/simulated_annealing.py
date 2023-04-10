@@ -4,14 +4,35 @@ import sys
 import math
 
 class simulated_annealing:
+
+    """
+        This constructor method will initialize the genetic algorithm's global parameters
+
+        @param p: Integer
+            - The number of centers to look for in the dataset
+
+        @param n: Integer
+            - The number of points in the dataset
+
+        @param points: list((Float, Float))
+            - The dataset itself, consisting of a bunch of (x, y) points
+
+        @param pertubation: F(np.array)
+            - The pertubation method for editing 1 or one bits in a solution.
+              This is used for exploring the state space
+
+        @param foolish: Boolean
+            - This boolean tells the algorithm if it should be foolish or not
+              That is, whether it should disregard all 'worse' solutions or not.
+    """
     def __init__(self, p, n, points,
-                       perbutation,
+                       perturbation,
                        foolish = False):
         self.p = p
         self.n = n
         self.points = points
 
-        self.perbutation = perbutation
+        self.perturbation = perturbation
 
         self.foolish = foolish
 
@@ -85,10 +106,10 @@ class simulated_annealing:
         solution = self.__generate_initial_solution()
         T = 10
         max_epoch = 1000
-
+    
         while (T >= 1):
             for epoch in range(0, int(max_epoch)):
-                new_solution = self.perbutation(solution, self.points)
+                new_solution = self.perturbation(solution, self.points)
                 if (self.__fitness_function(new_solution) < self.__fitness_function(solution)):
                     solution = new_solution
                 elif (not self.foolish):
