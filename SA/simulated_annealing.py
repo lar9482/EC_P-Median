@@ -106,15 +106,18 @@ class simulated_annealing:
         solution = self.__generate_initial_solution()
         T = 10
         max_epoch = 1000
-    
+
         while (T >= 1):
             for epoch in range(0, int(max_epoch)):
                 new_solution = self.perturbation(solution, self.points)
-                if (self.__fitness_function(new_solution) < self.__fitness_function(solution)):
+
+                old_fitness = self.__fitness_function(solution)
+                new_fitness = self.__fitness_function(new_solution)
+                if (new_fitness < old_fitness):
                     solution = new_solution
                 elif (not self.foolish):
                     chance = random.uniform(0, 1)
-                    chance_threshold = math.exp((self.__fitness_function(solution) -self.__fitness_function(new_solution)) / T)
+                    chance_threshold = math.exp((old_fitness - new_fitness) / T)
                     if (chance < chance_threshold):
                         solution = new_solution
             T = alpha*T
