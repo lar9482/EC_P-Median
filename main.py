@@ -4,6 +4,8 @@ from selection.selection_methods import roulette, roulette_adjustments, rank, ra
 from crossover.crossover_methods import single_point, double_point, uniform
 from mutation.mutation_methods import simple, hyper_heuristic
 
+import matplotlib.pyplot as plt
+import numpy as np
 
 def test_selection():
 
@@ -22,6 +24,30 @@ def test_selection():
     touranment(adjusted_fitness)
     print()
 
+def quick_graphing(chromosome, points):
+    selected = np.empty((len(np.where(chromosome == 1)[0]), 2))
+    non_selected = np.empty((len(points) - len(np.where(chromosome == 1)[0]), 2)) 
+
+    selected_i = 0
+    non_selected_i = 0
+
+    for i in range(0, len(chromosome)):
+        if chromosome[i] == 1:
+            selected[selected_i] = points[i]
+            selected_i += 1
+        else:
+            non_selected[non_selected_i] = points[i]
+            non_selected_i += 1
+    \
+    print([x[0] for x in non_selected])
+    print([y[1] for y in non_selected])
+    plt.plot([x[0] for x in selected], [y[1] for y in selected], 'o', color='red')
+    plt.plot([x[0] for x in non_selected], [y[1] for y in non_selected], 'x', color='blue')
+    plt.xlim(-2,12)
+    plt.ylim(-2,12)
+    plt.xscale('linear')
+    plt.yscale('linear')
+    plt.show()
 
 def main():
     p = 8
@@ -32,12 +58,14 @@ def main():
                            touranment, 
                            touranment_adjustments,
                            single_point,
-                           simple,
+                           hyper_heuristic,
                            1,
                            0.05,
                            50)
 
-    best_one = GA.run_algorithm(30)
+    best_chromosome = GA.run_algorithm(25)
+
+    quick_graphing(best_chromosome, points)
 
     print()
 

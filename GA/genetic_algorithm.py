@@ -303,10 +303,10 @@ class genetic_algorithm:
 
                     #Mutate the child chromosomes.
                     if (random.uniform(0, 1) < self.mutation_rate):
-                        child1 = self.mutation(child1)
+                        child1 = self.mutation(child1, self.points)
                     
                     if (random.uniform(0, 1) < self.mutation_rate):
-                        child2 = self.mutation(child2)
+                        child2 = self.mutation(child2, self.points)
 
                 new_population_pool[pop_index] = child1
                 new_population_pool[pop_index + int(self.population_size/2)] = child2
