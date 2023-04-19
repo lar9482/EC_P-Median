@@ -45,22 +45,23 @@ def test_GA():
                            25)
 
     best_chromosome = GA.run_algorithm(20)
+    graphing(best_chromosome, points, '7')
 
-    graphing(best_chromosome, points)
+
+def test_SA():
+    p = 8
+    n = 72
+    points = load_dataset(p, n)
+    SA = simulated_annealing(p, n, points, simple, False)
+    best_solution = SA.run_algorithm()
+
+    graphing(best_solution, points)
+
 def main():
 
-    # p = 8
-    # n = 72
-    # points = load_dataset(p, n)
-    # SA = simulated_annealing(p, n, points, simple, False)
-    # best_solution = SA.run_algorithm()
+    # test_GA()
 
-    # quick_graphing(best_solution, points)
-    # print()
-
-    test_GA()
-
-    # generate_dataset(p = 25)
+    generate_dataset(p = 24)
 
 
 if __name__ == "__main__":
