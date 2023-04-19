@@ -74,7 +74,7 @@ def run_GA(GA, iterations, points, lock):
 
 def test_GA():
     #Constants
-    pop_size = 50
+    pop_size = 25
     iterations = 100
     crossover_rate = 1
     mutation_rate = 0.05
@@ -90,10 +90,10 @@ def test_GA():
             with Manager() as manager:
                 all_processes = []
                 lock = manager.Lock()
-                points = load_dataset(p_n[0], p_n[1])
-            
+                
                 for crossover in crossovers:
                     for mutation in mutations:
+                        points = load_dataset(p_n[0], p_n[1])
                         GA = genetic_algorithm( p_n[0], 
                                                 p_n[1], 
                                                 points, 
