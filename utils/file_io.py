@@ -3,6 +3,9 @@ import os
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import openpyxl
+
+from pathlib import Path
 
 def load_dataset(p = 4, n = 20):
     file_path = os.path.join(sys.path[0], 'dataset', "P_{0}_N_{1}.xlsx".format(p, n))
@@ -24,3 +27,12 @@ def load_dataset(p = 4, n = 20):
 def graph_raw_points(points):
     plt.plot(points[:, 0], points[:, 1], 'o', color='black')
     plt.show()
+
+
+def save_stats(selection, crossover, mutation, fitness, file_name):
+    path = os.path.join(sys.path[0], 'Results', 'Stats', file_name + '.xlsx')
+    wb = openpyxl.load_workbook(path) 
+    sheet = wb.active 
+    sheet.append([selection, crossover, mutation, fitness])
+    
+    wb.save(path)

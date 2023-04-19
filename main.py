@@ -10,6 +10,7 @@ import numpy as np
 
 from utils.generate_dataset import generate_dataset
 from utils.graph import graphing
+from utils.file_io import save_stats
 
 def test_selection():
 
@@ -45,6 +46,14 @@ def test_GA():
                            25)
 
     best_chromosome = GA.run_algorithm(20)
+    best_fitness = GA.fitness_function(best_chromosome)
+    stat_file_name = 'GA_P_{0}_N_{1}_results'.format(p, n)
+
+    save_stats(roulette.__name__, 
+               single_point.__name__, 
+               hyper_heuristic.__name__, 
+               best_fitness, 
+               stat_file_name)
     graphing(best_chromosome, points, '7')
 
 
@@ -54,14 +63,13 @@ def test_SA():
     points = load_dataset(p, n)
     SA = simulated_annealing(p, n, points, simple, False)
     best_solution = SA.run_algorithm()
-
     graphing(best_solution, points)
 
 def main():
 
-    # test_GA()
+    test_GA()
 
-    generate_dataset(p = 24)
+    # generate_dataset(p = 24)
 
 
 if __name__ == "__main__":
