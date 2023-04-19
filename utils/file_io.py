@@ -29,7 +29,7 @@ def graph_raw_points(points):
     plt.show()
 
 
-def save_stats(selection, crossover, mutation, fitness, file_name):
+def save_GA_stats(selection, crossover, mutation, fitness, file_name):
     path = os.path.join(sys.path[0], 'Results', 'Stats', file_name + '.xlsx')
     wb = openpyxl.load_workbook(path) 
     sheet = wb.active 
