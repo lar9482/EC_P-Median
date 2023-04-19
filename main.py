@@ -68,9 +68,9 @@ def run_GA(GA, iterations, points, lock):
                   GA.mutation.__name__ ,
                   best_fitness, 
                   stat_file_name)
-    lock.release()
-
     graphing(best_chromosome, points, graph_file_name)
+    lock.release()
+    
 
 def test_GA():
     #Constants
@@ -80,8 +80,8 @@ def test_GA():
     mutation_rate = 0.05
 
     #Paramter options
-    p_n_options = [(8, 72), (24, 600), (25, 650)]
-    selections = [(roulette, roulette_adjustments), (rank, rank_adjustments), (touranment, touranment_adjustments)]
+    p_n_options = [(14, 210), (15, 240)]
+    selections = [(roulette, roulette_adjustments), (rank, rank_adjustments)]
     crossovers = [single_point, double_point, uniform]
     mutations = [simple, hyper_heuristic]
 
@@ -109,13 +109,13 @@ def test_GA():
                                          ))
                         all_processes.append(process)
                     
-            #Start all of the subprocesses
-            for process in all_processes:
-                process.start()
+                #Start all of the subprocesses
+                for process in all_processes:
+                    process.start()
 
-            #Wait for all subprocesses to finish before continuing
-            for process in all_processes:
-                process.join()
+                #Wait for all subprocesses to finish before continuing
+                for process in all_processes:
+                    process.join()
 
 def test_SA():
     p = 8
@@ -129,7 +129,7 @@ def main():
 
     test_GA()
 
-    # generate_dataset(p = 24)
+    # generate_dataset(p = 15)
 
 
 if __name__ == "__main__":
