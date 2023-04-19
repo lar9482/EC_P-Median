@@ -17,4 +17,4 @@ def generate_dataset(p = 3):
         group.plot(ax=ax, kind='scatter', x='x', y='y', label=key, color=colors[key])
     plt.show()
 
-generate_dataset(10)
+    
