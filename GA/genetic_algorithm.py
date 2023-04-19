@@ -318,7 +318,7 @@ class genetic_algorithm:
             
 
             self.population = new_population_pool
-            print('Generation: %s' % str(epoch+1))
+            print('%s %s %s Generation: %s' % (self.selection.__name__, self.crossover.__name__, self.mutation.__name__, str(epoch+1)))
             curr_best_chromosome = self.__best_chromosome(adjusted_fitness)
 
             if (epoch % 10 == 0):
