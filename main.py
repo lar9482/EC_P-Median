@@ -80,7 +80,7 @@ def test_GA():
     mutation_rate = 0.05
 
     #Paramter options
-    p_n_options = [(4, 20)]
+    p_n_options = [(8, 72)]
     selections = [(roulette, roulette_adjustments), (rank, rank_adjustments), (touranment, touranment_adjustments)]
     crossovers = [single_point, double_point, uniform]
     mutations = [simple, hyper_heuristic]
@@ -89,11 +89,11 @@ def test_GA():
         with Manager() as manager:
             all_processes = []
             lock = manager.Lock()
-            
+            points = load_dataset(p_n[0], p_n[1])
             for selection in selections:
                 for crossover in crossovers:
                     for mutation in mutations:
-                        points = load_dataset(p_n[0], p_n[1])
+                        
                         GA = genetic_algorithm( p_n[0], 
                                                 p_n[1], 
                                                 points, 
