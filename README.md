@@ -1,6 +1,6 @@
-# IN PROGRESS
-
 # Major project for CS 4623-01
+
+## Introduction
 
 Taught by [Dr. Roger Wainwright](https://engineering.utulsa.edu/computer-science/faculty/profile/roger-wainwright/) in SP 2023.
 
@@ -16,7 +16,7 @@ Experiments with the following techniques to solve the P-Median problem.
   - A foolish hill climbing algorithm.
     - Similiar implementation to simulated annealing, except 'worse' chromosomes are not considered at all.
 
-# Sample solutions
+## Sample solutions
   - Solutions constants with 
     - 100 epochs
     - Population size of 50
