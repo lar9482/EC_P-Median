@@ -1,4 +1,4 @@
-from utils.file_io import load_dataset, graph_raw_points
+from utils.file_io import load_dataset
 from GA.genetic_algorithm import genetic_algorithm
 from SA.simulated_annealing import simulated_annealing
 from selection.selection_methods import roulette, roulette_adjustments, rank, rank_adjustments, touranment, touranment_adjustments
@@ -11,57 +11,19 @@ from utils.file_io import save_GA_stats
 
 from multiprocessing import Manager, Lock, Process
 
-def test_selection():
-
-    GA = genetic_algorithm(4, 20, load_dataset(4, 20), 
-                           roulette, 
-                           roulette_adjustments,
-                           single_point)
-    
-    adjusted_fitness = roulette_adjustments(GA.calculate_raw_fitness(), GA.population_size)
-    roulette(adjusted_fitness)
-
-    adjusted_fitness = rank_adjustments(GA.calculate_raw_fitness(), GA.population_size)
-    rank(adjusted_fitness)
-
-    adjusted_fitness = touranment_adjustments(GA.calculate_raw_fitness(), GA.population_size)
-    touranment(adjusted_fitness)
-    print()
-
-def old_test_GA():
-    p = 4
-    n = 20
-    points = load_dataset(p, n)
-
-    GA = genetic_algorithm(p, 
-                           n, 
-                           points, 
-                           roulette, 
-                           roulette_adjustments,
-                           single_point,
-                           hyper_heuristic,
-                           1,
-                           0.05,
-                           25)
-
-    best_chromosome = GA.run_algorithm(20)
-    best_fitness = GA.fitness_function(best_chromosome)
-    file_name = 'GA_P_{0}_N_{1}_results'.format(p, n)
-
-    save_GA_stats(roulette.__name__, 
-               single_point.__name__, 
-               hyper_heuristic.__name__, 
-               best_fitness, 
-               file_name)
-    graphing(best_chromosome, points, '7')
-
 def run_GA(GA, iterations, points, lock):
+
+    #Run the algorithm and get the best chromosome
     best_chromosome = GA.run_algorithm(iterations)
 
+    #Get fitness associated with best chromosome
     best_fitness = GA.fitness_function(best_chromosome)
+
+    #Given the parameters, format the file name for the statistics and graph files.
     stat_file_name = 'GA_P_{0}_N_{1}_results'.format(GA.p, GA.n)
     graph_file_name = 'P_{0}_N_{1}_{2}_{3}_{4}'.format(GA.p, GA.n, GA.selection.__name__, GA.crossover.__name__, GA.mutation.__name__)
 
+    #Save the stats and graph the best chromosome.
     lock.acquire()
     save_GA_stats(GA.selection.__name__, 
                   GA.crossover.__name__, 
@@ -85,8 +47,12 @@ def test_GA():
     crossovers = [single_point, double_point, uniform]
     mutations = [simple, hyper_heuristic]
 
+
+    #Scanning through all possible p/n combinations and selection method options
     for p_n in p_n_options:
         for selection in selections:
+
+            #For every crossover and mutation method combination, run the genetic algorithm on a subprocess
             with Manager() as manager:
                 all_processes = []
                 lock = manager.Lock()
@@ -128,7 +94,6 @@ def test_SA():
 def main():
 
     test_GA()
-
     # generate_dataset(p = 15)
 
 
