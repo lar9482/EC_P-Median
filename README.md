@@ -16,8 +16,8 @@ Experiments with the following techniques to solve the P-Median problem.
   - A foolish hill climbing algorithm.
     - Similiar implementation to simulated annealing, except 'worse' chromosomes are not considered at all.
 
-## Sample solutions
-  - Solutions constants with 
+## Sample solutions(generated through genetic algorithm)
+  - Algorithm constants:
     - 100 epochs
     - Population size of 50
     - 100% crossover rate
