@@ -30,4 +30,4 @@ Experiments with the following techniques to solve the P-Median problem.
   - Large dataset
     - P=15 with 240 points.
     - Solution generated with rank selection, uniform crossover, and hyper heuristic mutation.
-    <img src="Results/Graphs/P_15/P_15_N_240_rank_uniform_hyper_heuristic.png" width="350" height="300">
+      <img src="Results/Graphs/P_15/P_15_N_240_rank_uniform_hyper_heuristic.png" width="350" height="300">
