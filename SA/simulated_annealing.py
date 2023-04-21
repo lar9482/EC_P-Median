@@ -36,7 +36,7 @@ class simulated_annealing:
 
         self.foolish = foolish
 
-    def __fitness_function(self, solution):
+    def fitness_function(self, solution):
 
         #Get the city indices that have been selected(where they are 1)
         selected_cities = np.where(solution == 1)[0]
@@ -101,7 +101,7 @@ class simulated_annealing:
 
         return initial_solution
 
-    def run_algorithm(self, alpha = 0.80, beta = 1.005):
+    def run_algorithm(self, alpha = 0.95, beta = 1.05):
         
         solution = self.__generate_initial_solution()
         T = 10
@@ -111,8 +111,8 @@ class simulated_annealing:
             for epoch in range(0, int(max_epoch)):
                 new_solution = self.perturbation(solution, self.points)
 
-                old_fitness = self.__fitness_function(solution)
-                new_fitness = self.__fitness_function(new_solution)
+                old_fitness = self.fitness_function(solution)
+                new_fitness = self.fitness_function(new_solution)
                 if (new_fitness < old_fitness):
                     solution = new_solution
                 elif (not self.foolish):
@@ -122,7 +122,7 @@ class simulated_annealing:
                         solution = new_solution
             T = alpha*T
             max_epoch = beta*max_epoch
-            print(T)
+            print("%s and %s curr temp: %s" % (self.perturbation.__name__, self.foolish, T))
 
         return solution
         

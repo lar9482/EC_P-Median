@@ -36,3 +36,11 @@ def save_GA_stats(selection, crossover, mutation, fitness, file_name):
     sheet.append([selection, crossover, mutation, fitness])
     
     wb.save(path)
+
+def save_SA_stats(foolish, pertubation, fitness, file_name):
+    path = os.path.join(sys.path[0], 'Results', 'Stats', file_name + '.xlsx')
+    wb = openpyxl.load_workbook(path) 
+    sheet = wb.active 
+    sheet.append([foolish, pertubation, fitness])
+    
+    wb.save(path)

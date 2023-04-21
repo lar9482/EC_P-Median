@@ -7,7 +7,7 @@ from mutation.mutation_methods import simple, hyper_heuristic
 
 from utils.generate_dataset import generate_dataset
 from utils.graph import graphing
-from utils.file_io import save_GA_stats
+from utils.file_io import save_GA_stats, save_SA_stats
 
 from multiprocessing import Manager, Lock, Process
 
@@ -83,7 +83,7 @@ def test_GA():
                 for process in all_processes:
                     process.join()
 
-def test_SA():
+def old_test_SA():
     p = 8
     n = 72
     points = load_dataset(p, n)
@@ -91,9 +91,66 @@ def test_SA():
     best_solution = SA.run_algorithm()
     graphing(best_solution, points)
 
+def run_SA(SA, points, alpha, beta, lock):
+    best_solution = SA.run_algorithm(alpha, beta)
+    best_fitness = SA.fitness_function(best_solution)
+    #Given the parameters, format the file name for the statistics and graph files.
+    stat_file_name = 'SA_P_{0}_N_{1}_results'.format(SA.p, SA.n)
+    graph_file_name = 'SA_P_{0}_N_{1}_{2}_{3}'.format(SA.p, SA.n, SA.perturbation.__name__, SA.foolish)
+
+    lock.acquire()
+    save_SA_stats(SA.foolish, 
+                  SA.perturbation.__name__,
+                  best_fitness, 
+                  stat_file_name)
+    graphing(best_solution, points, graph_file_name)
+    lock.release()
+
+
+def test_SA():
+
+    #Constants for simulated annealing
+    alpha = 0.95
+    beta = 1.05
+
+    #Parameter options for simulated annealing
+    p_n_options = [(4, 20), (8, 72), (14, 210), (15, 240)]
+    pertubations = [simple, hyper_heuristic]
+    foolish_options = [False, True]
+
+    for p_n in p_n_options:
+
+        with Manager() as manager:
+            all_processes = []
+            lock = manager.Lock()
+
+            for pertubation in pertubations:
+                for foolish_option in foolish_options:
+                    points = load_dataset(p_n[0], p_n[1])
+                    SA = simulated_annealing(
+                        p_n[0],
+                        p_n[1],
+                        points,
+                        pertubation,
+                        foolish_option
+                    )
+                    process = Process(target=run_SA, args=(
+                                            SA, points, alpha, beta, lock
+                                         ))
+                    all_processes.append(process)
+            
+            #Start all of the subprocesses
+            for process in all_processes:
+                process.start()
+
+            #Wait for all subprocesses to finish before continuing
+            for process in all_processes:
+                process.join()
+
 def main():
 
-    test_GA()
+    #test_GA()
+    test_SA()
     # generate_dataset(p = 15)
 
 
