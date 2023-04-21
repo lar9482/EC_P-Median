@@ -84,8 +84,8 @@ def test_GA():
                     process.join()
 
 def old_test_SA():
-    p = 8
-    n = 72
+    p = 4
+    n = 20
     points = load_dataset(p, n)
     SA = simulated_annealing(p, n, points, simple, False)
     best_solution = SA.run_algorithm()
@@ -111,12 +111,12 @@ def test_SA():
 
     #Constants for simulated annealing
     alpha = 0.95
-    beta = 1.05
+    beta = 1.01
 
     #Parameter options for simulated annealing
-    p_n_options = [(4, 20), (8, 72), (14, 210), (15, 240)]
+    p_n_options = [(8, 72), (14, 210), (15, 240)]
     pertubations = [simple, hyper_heuristic]
-    foolish_options = [False, True]
+    foolish_options = [True, False]
 
     for p_n in p_n_options:
 
@@ -150,7 +150,8 @@ def test_SA():
 def main():
 
     #test_GA()
-    test_SA()
+    # test_SA()
+    old_test_SA()
     # generate_dataset(p = 15)
 
 
