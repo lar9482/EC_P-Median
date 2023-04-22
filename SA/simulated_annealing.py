@@ -105,7 +105,7 @@ class simulated_annealing:
         
         solution = self.__generate_initial_solution()
         T = 10
-        max_epoch = 1000
+        max_epoch = 200
 
         while (T >= 1):
             for epoch in range(0, int(max_epoch)):
@@ -120,6 +120,7 @@ class simulated_annealing:
                     chance_threshold = math.exp((old_fitness - new_fitness) / T)
                     if (chance < chance_threshold):
                         solution = new_solution
+
             T = alpha*T
             max_epoch = beta*max_epoch
             print("%s and %s curr temp: %s" % (self.perturbation.__name__, self.foolish, T))

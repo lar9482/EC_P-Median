@@ -114,8 +114,8 @@ def test_SA():
     beta = 1.01
 
     #Parameter options for simulated annealing
-    p_n_options = [(8, 72), (14, 210), (15, 240)]
-    pertubations = [simple, hyper_heuristic]
+    p_n_options = [(15, 240)]
+    pertubations = [simple]
     foolish_options = [True, False]
 
     for p_n in p_n_options:
@@ -150,8 +150,8 @@ def test_SA():
 def main():
 
     #test_GA()
-    # test_SA()
-    old_test_SA()
+    test_SA()
+    # old_test_SA()
     # generate_dataset(p = 15)
 
 
