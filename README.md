@@ -23,15 +23,21 @@ Experiments with the following techniques to solve the P-Median problem.
 
   - Algorithm constants:
     - 100 epochs
-    - Population size of 50
+    - Population size of 25
     - 100% crossover rate
     - 5% mutation rate
+    
   - Small dataset
     - P=4 with 20 points. 
     - Solution generated with roulette selection, single point crossover, and simple mutation.
-      <img src="Results/Graphs/P_4/P_4_N_20_roulette_single_point_simple.png" width="350" height="300">
+      <img src="Results/Graphs/P_4/P_4_N_20_roulette_single_point_simple.png" width="400" height="300">
       
-  - Largest dataset
+  - Medium dataset
+    - P=8 with 72 points. 
+    - Solution generated with roulette selection, single point crossover, and simple mutation.
+      <img src="Results/Graphs/P_8/P_8_N_72_roulette_single_point_simple.png" width="400" height="300">
+      
+  - Large dataset
     - P=15 with 240 points.
-    - Solution generated with rank selection, uniform crossover, and hyper heuristic mutations
-      <img src="Results/Graphs/P_15/P_15_N_240_rank_uniform_hyper_heuristic.png" width="350" height="300">
+    - Solution generated with rank selection, uniform crossover, and hyper heuristic mutation.
+      <img src="Results/Graphs/P_15/P_15_N_240_rank_uniform_hyper_heuristic.png" width="400" height="300">
